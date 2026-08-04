@@ -1,0 +1,20 @@
+services:
+  landing-page:
+    image: nginx:alpine
+    container_name: landing_page
+    restart: always
+    # Impedisce l'acquisizione di nuovi privilegi
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx:uid=101
+      - /var/run:uid=101
+    deploy:
+      resources:
+        limits:
+          memory: 64M
+    ports:
+      - "8090:80"
+    volumes:
+      - .:/usr/share/nginx/html:ro

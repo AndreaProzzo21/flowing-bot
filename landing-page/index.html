@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlowingBot — Edge-to-Cloud Automation Lab</title>
+<meta name="description" content="FlowingBot designs the infrastructure between physical devices and the cloud — edge agents, Kubernetes platforms, and the automation pipelines that keep data moving.">
+<link rel="icon" type="image/png" sizes="192x192" href="/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=6">
+</head>
+<body>
+
+<nav id="site-nav">
+    <a href="index.html" class="brand">
+        <svg class="brand-mark" viewBox="0 0 30 30" fill="none">
+            <rect x="1" y="1" width="28" height="28" rx="7" stroke="#1E4FE0" stroke-width="1.4"/>
+            <path d="M7 20C10 20 10 10 15 10C20 10 20 20 23 20" stroke="#1E4FE0" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="23" cy="20" r="1.6" fill="#1E4FE0"/>
+        </svg>
+        <span class="brand-word">Flowing<span>Bot</span></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+        <a href="about.html">About</a>
+        <a href="#solutions">Solutions</a>
+        <a href="#lab">Lab Systems</a>
+        <a href="mailto:info@flowingbot.com" class="nav-cta">GET IN TOUCH</a>
+    </div>
+</nav>
+
+<header class="hero">
+    <div class="container hero-container">
+        
+        <span class="eyebrow">Edge-to-Cloud Automation Lab</span>
+        <h1>Data, from sensor <br>to <span>decision.</span></h1>
+        <p class="lede">We build the infrastructure between physical devices and the cloud: edge agents that never sleep, Kubernetes platforms that scale and the pipelines that turn raw signals into action.</p>
+        
+        <div class="hero-actions">
+            <a href="#solutions" class="btn btn-primary">View capabilities</a>
+            <a href="#lab" class="btn btn-ghost">See lab systems →</a>
+        </div>
+    </div>
+</header>
+
+<section id="solutions">
+    <div class="container">
+        <div class="section-head">
+            <span class="eyebrow">Capabilities</span>
+            <h2>A complete automation ecosystem.</h2>
+            <p>Four disciplines, one continuous pipeline — from the sensor on a machine to the dashboard your team actually looks at.</p>
+        </div>
+        <div class="cap-grid">
+            <div class="cap-card">
+                <span class="cap-code">SIG-01 · AI ORCHESTRATION</span>
+                <h3>Autonomous agents</h3>
+                <p>Agents that plan, reason, and execute — from Telegram bots wired into n8n to LLM-powered assistants that query fleet status without ever touching raw credentials.</p>
+            </div>
+            <div class="cap-card">
+                <span class="cap-code">SIG-02 · EDGE & IIoT</span>
+                <h3>Device-to-cloud telemetry</h3>
+                <p>Go and C++ agents on Raspberry Pi and ESP32 stream host and sensor telemetry over MQTT, with JWT rotation handled in the background so fleets never go dark.</p>
+            </div>
+            <div class="cap-card">
+                <span class="cap-code">SIG-03 · CLOUD-NATIVE OPS</span>
+                <h3>Kubernetes at scale</h3>
+                <p>Multi-cluster fleets managed through zero-trust proxies, GitOps pipelines, and Helm engines built for one-click rollbacks, not late-night kubectl.</p>
+            </div>
+            <div class="cap-card">
+                <span class="cap-code">SIG-04 · OBSERVABILITY</span>
+                <h3>Data that decides</h3>
+                <p>Prometheus, Loki, and InfluxDB stitched into dashboards that turn thermal sensors and vibration curves into decisions before failure, not after.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="lab" class="lab-alt">
+    <div class="container">
+        <div class="section-head">
+            <span class="eyebrow">Lab Systems</span>
+            <h2>What we've deployed.</h2>
+            <p>Working systems built and run by the lab — some in production, some still on the bench. Documentation is open where the system is live.</p>
+        </div>
+        <div class="lab-grid">
+            <div class="lab-card">
+                <div class="lab-card-main">
+                    <h3><span class="status-dot is-online"></span>EdgeHub<span class="status-tag is-online">DEPLOYED</span></h3>
+                    <p>Distributed Edge Control Plane. A Go telemetry agent (gopsutil) monitors host and container health across bare-metal and cloud VMs, reporting into an async FastAPI backend with over-the-air JWT rotation and Discord/Slack alerting.</p>
+                    <div class="stack-tags"><span>Go</span><span>FastAPI</span><span>PostgreSQL</span></div>
+                </div>
+                <a href="https://andreaprozzo21.github.io/edge-hub/" class="lab-card-link" target="_blank" rel="noopener">View docs →</a>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-card-main">
+                    <h3><span class="status-dot is-online"></span>K8s Cloud Gateway<span class="status-tag is-online">DEPLOYED</span></h3>
+                    <p>Self-hosted control plane for multi-cluster Kubernetes fleets. Kubeconfigs never reach the client — credentials are encrypted at rest with Fernet, sessions run on HttpOnly JWTs, and RBAC scoping maps team roles to real cluster permissions.</p>
+                    <div class="stack-tags"><span>FastAPI</span><span>Helm</span><span>SQLite</span><span>RBAC</span></div>
+                </div>
+                <a href="https://andreaprozzo21.github.io/k8s-cloud-gateway/" class="lab-card-link">View docs →</a>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-card-main">
+                    <h3><span class="status-dot"></span>Predictive Maintenance Pipeline<span class="status-tag">IN LAB</span></h3>
+                    <p>An end-to-end MLOps pipeline for industrial assets. Digital-twin simulators model ISO 10816 vibration standards; Random Forest models train on InfluxDB history and hot-load into AWS inference services for real-time diagnostics.</p>
+                    <div class="stack-tags"><span>Python</span><span>InfluxDB</span><span>MQTT</span><span>Terraform</span></div>
+                </div>
+                <a href="https://github.com/AndreaProzzo21/Edge-Cloud-PdM-Pipeline" class="lab-card-link">View docs →</a>
+            </div>
+
+            <div class="lab-card">
+                <div class="lab-card-main">
+                    <h3><span class="status-dot"></span>AWS IoT Industrial Hub<span class="status-tag">IN LAB</span></h3>
+                    <p>Multi-site telemetry ingestion on AWS IoT Core. An event-driven Lambda multiplexer evaluates thresholds and fires SNS alerts, with X.509 and mTLS enforced on every simulated device for strict topic isolation.</p>
+                    <div class="stack-tags"><span>AWS IoT Core</span><span>Lambda</span><span>Grafana</span><span>mTLS</span></div>
+                </div>
+                <a href="https://github.com/AndreaProzzo21/AWS-IoTCore-Industrial-Hub" class="lab-card-link">View docs →</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="contacts">
+    <div class="container">
+        <div class="cta-band">
+            <div>
+                <h2>Have a signal worth automating?</h2>
+                <p>Tell us what's not talking to what — we'll figure out the flow.</p>
+            </div>
+            <a href="mailto:info@flowingbot.com" class="btn btn-primary">info@flowingbot.com</a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container footer-row">
+        <span class="footer-brand">© 2026 FLOWINGBOT LAB</span>
+        <a href="mailto:info@flowingbot.com" class="footer-mail">Contact us · info@flowingbot.com</a>
+    </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

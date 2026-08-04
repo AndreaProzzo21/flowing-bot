@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — FlowingBot</title>
+<meta name="description" content="FlowingBot is an edge-to-cloud automation lab based in Emilia Romagna, building the systems between physical devices and the cloud.">
+<link rel="icon" type="image/png" sizes="192x192" href="/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=6">
+</head>
+<body>
+
+<nav id="site-nav">
+    <a href="index.html" class="brand">
+        <svg class="brand-mark" viewBox="0 0 30 30" fill="none">
+            <rect x="1" y="1" width="28" height="28" rx="7" stroke="#1E4FE0" stroke-width="1.4"/>
+            <path d="M7 20C10 20 10 10 15 10C20 10 20 20 23 20" stroke="#1E4FE0" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="23" cy="20" r="1.6" fill="#1E4FE0"/>
+        </svg>
+        <span class="brand-word">Flowing<span>Bot</span></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+        <a href="index.html">Home</a>
+        <a href="index.html#solutions">Solutions</a>
+        <a href="index.html#lab">Lab Systems</a>
+        <a href="mailto:info@flowingbot.com" class="nav-cta">GET IN TOUCH</a>
+    </div>
+</nav>
+
+<header class="hero">
+    <div class="container hero-container">
+        <span class="eyebrow">About the lab</span>
+        <h1>Systems that listen <br>before they <span>act.</span></h1>
+        <p class="lede">Based in Emilia Romagna, FlowingBot is a small automation lab working at the seam between physical devices and the cloud. We don't build dashboards for their own sake — we build the plumbing that makes the dashboard trustworthy.</p>
+    </div>
+</header>
+
+<section>
+    <div class="container">
+        <div class="section-head">
+            <span class="eyebrow">How a signal moves through the lab</span>
+            <h2>Sense. Transmit. Orchestrate. Observe.</h2>
+            <p>Every system we ship follows the same four-stage path — it's the actual pipeline behind EdgeHub.</p>
+        </div>
+        <div class="approach">
+            <div class="approach-step">
+                <span class="approach-code">01 / SENSE</span>
+                <h3>Edge instrumentation</h3>
+                <p>Go and C++ agents read CPU, thermal, and vibration data directly off Raspberry Pi, ESP32, and bare-metal hosts — no polling a dashboard that's already stale.</p>
+            </div>
+            <div class="approach-step">
+                <span class="approach-code">02 / TRANSMIT</span>
+                <h3>Reliable delivery</h3>
+                <p>MQTT and stateless JWT pipelines move telemetry off-device, with over-the-air token rotation so a fleet never quietly drops offline.</p>
+            </div>
+            <div class="approach-step">
+                <span class="approach-code">03 / ORCHESTRATE</span>
+                <h3>Cloud-native control</h3>
+                <p>Kubernetes, GitOps, and zero-trust proxies turn raw ingestion into a system that scales — and that someone other than us can operate safely.</p>
+            </div>
+            <div class="approach-step">
+                <span class="approach-code">04 / OBSERVE</span>
+                <h3>Decisions, not charts</h3>
+                <p>Prometheus, Loki, and Grafana close the loop — the point isn't a pretty graph, it's catching the failure before it happens.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="lab-alt">
+    <div class="container">
+        <div class="section-head">
+            <span class="eyebrow">Vision</span>
+            <h2>What we believe.</h2>
+        </div>
+        <div class="values-grid">
+            <div class="value-card">
+                <h3>Workflows & Agents</h3>
+                <p>True automation requires the right balance. We build robust, deterministic workflows to guarantee reliable core operations, and seamlessly integrate AI agents to handle dynamic contexts and complex edge cases.</p>
+            </div>
+            <div class="value-card">
+                <h3>IIoT is not optional</h3>
+                <p>Hardware and software must speak the same language seamlessly. We treat sensors and physical machinery as the core foundation of our architectures, ensuring data integrity from the ground up.</p>
+            </div>
+            <div class="value-card">
+                <h3>Built to be operated</h3>
+                <p>Long-term reliability is our priority. We engineer transparent, well-documented ecosystems designed to be easily managed, scaled, and sustained by your entire operations team.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="section-head">
+            <span class="eyebrow">Stack</span>
+            <h2>What we build with.</h2>
+        </div>
+
+        <div class="stack-domain">
+            <div class="stack-domain-label">Cloud & Orchestration</div>
+            <div class="stack-pills"><span>Kubernetes</span><span>Docker</span><span>AWS</span><span>Terraform</span></div>
+        </div>
+        <div class="stack-domain">
+            <div class="stack-domain-label">Backend & APIs</div>
+            <div class="stack-pills"><span>Python</span><span>FastAPI</span><span>Flask</span></div>
+        </div>
+        <div class="stack-domain">
+            <div class="stack-domain-label">IoT & Edge</div>
+            <div class="stack-pills"><span>MQTT</span><span>Raspberry Pi</span><span>ESP32</span><span>Go</span></div>
+        </div>
+        <div class="stack-domain">
+            <div class="stack-domain-label">Data & Monitoring</div>
+            <div class="stack-pills"><span>InfluxDB</span><span>PostgreSQL</span><span>Grafana</span><span>Prometheus</span><span>Loki</span><span>KubeBot</span></div>
+        </div>
+        <div class="stack-domain">
+            <div class="stack-domain-label">Automation & Deploy</div>
+            <div class="stack-pills"><span>n8n</span><span>GitHub Actions</span><span>Flux</span></div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="cta-band">
+            <div>
+                <h2>Curious how the lab works day to day?</h2>
+                <p>Open systems, open questions — happy to talk shop.</p>
+            </div>
+            <a href="mailto:info@flowingbot.com" class="btn btn-primary">info@flowingbot.com</a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container footer-row">
+        <span class="footer-brand">© 2026 FLOWINGBOT LAB</span>
+        <a href="mailto:info@flowingbot.com" class="footer-mail">Contact us · info@flowingbot.com</a>
+    </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
