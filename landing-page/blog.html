@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — FlowingBot Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" type="image/png" sizes="192x192" href="/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=7">
+</head>
+<body>
+
+<nav id="site-nav">
+    <a href="index.html" class="brand">
+        <svg class="brand-mark" viewBox="0 0 30 30" fill="none">
+            <rect x="1" y="1" width="28" height="28" rx="7" stroke="#1E4FE0" stroke-width="1.4"/>
+            <path d="M7 20C10 20 10 10 15 10C20 10 20 20 23 20" stroke="#1E4FE0" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="23" cy="20" r="1.6" fill="#1E4FE0"/>
+        </svg>
+        <span class="brand-word">Flowing<span>Bot</span></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+        <a href="about.html">About</a>
+        <a href="index.html#solutions">Solutions</a>
+        <a href="index.html#lab">Lab Systems</a>
+        <a href="blog.html" style="color: var(--blue);">Blog</a>
+        <a href="mailto:info@flowingbot.com" class="nav-cta">GET IN TOUCH</a>
+    </div>
+</nav>
+
+<header class="hero about-hero">
+    <div class="container about-hero-container">
+        <span class="eyebrow">Lab Notes</span>
+        <h1>Engineering <span>insights</span>.</h1>
+        <p class="lede">An open notebook of our edge-to-cloud deployments, experiments, and architectural decisions. We built this space to share what we learn in the lab and spark technical discussions. Dive into the articles, drop a reaction, and share your thoughts in the comments below.</p>
+    </div>
+</header>
+
+<section id="articles" class="lab-alt">
+    <div class="container">
+        <div class="lab-grid">
+            
+            <!-- Article Card 1 -->
+            <div class="lab-card">
+                <div class="lab-card-main">
+                    <h3><span class="status-dot is-online"></span>Talos Linux at the Edge<span class="status-tag is-online">NEW</span></h3>
+                    <p>Bootstrapping a fast, secure, and reproducible single-node Kubernetes cluster for edge testing using Talos Linux on a resource-constrained VM.</p>
+                    <div class="stack-tags">
+                        <span>August 4, 2026</span>
+                        <span>Talos</span>
+                        <span>Kubernetes</span>
+                        <span>Edge</span>
+                    </div>
+                </div>
+                <a href="articles/talos.html" class="lab-card-link">Read article →</a>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="container footer-row">
+        <span class="footer-brand">© 2026 FLOWINGBOT LAB</span>
+        <a href="mailto:info@flowingbot.com" class="footer-mail">Contact us · info@flowingbot.com</a>
+    </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

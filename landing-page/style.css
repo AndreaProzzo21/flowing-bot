@@ -628,3 +628,63 @@ footer {
 @media (prefers-reduced-motion: reduce) {
     * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
 }
+
+
+/* ==========================================================================
+   Blog & Article Styles (Aggiunte)
+   ========================================================================== */
+.article-header {
+    padding: 140px 0 40px;
+    border-bottom: 1px solid var(--line);
+    background: var(--paper);
+}
+
+.article-header-container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 32px;
+}
+
+.article-meta {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+    margin-bottom: 24px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.article-header h1 {
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    line-height: 1.1;
+    margin-bottom: 24px;
+}
+
+.article-body {
+    max-width: 720px;
+    margin: 60px auto;
+    padding: 0 32px;
+    font-size: 1.08rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+}
+
+.article-body p {
+    margin-bottom: 24px;
+}
+
+.article-body h2 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    color: var(--ink);
+    margin: 48px 0 20px;
+}
+
+.giscus-wrapper {
+    max-width: 720px;
+    margin: 60px auto 100px;
+    padding: 0 32px;
+    border-top: 1px solid var(--line);
+    padding-top: 60px;
+}
