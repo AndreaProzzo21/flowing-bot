@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why We Built a Zero-Knowledge K8s Gateway - FlowingBot Blog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" type="image/png" sizes="192x192" href="../logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css?v=7">
+<style>
+    .code-block {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        padding: 16px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.9em;
+        margin-bottom: 24px;
+        color: #212529;
+    }
+    .article-image {
+        margin: 40px 0;
+        border-radius: 8px;
+        border: 1px solid var(--line);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+</style>
+</head>
+<body>
+
+<nav id="site-nav">
+    <a href="../index.html" class="brand">
+        <svg class="brand-mark" viewBox="0 0 30 30" fill="none">
+            <rect x="1" y="1" width="28" height="28" rx="7" stroke="#1E4FE0" stroke-width="1.4"/>
+            <path d="M7 20C10 20 10 10 15 10C20 10 20 20 23 20" stroke="#1E4FE0" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="23" cy="20" r="1.6" fill="#1E4FE0"/>
+        </svg>
+        <span class="brand-word">Flowing<span>Bot</span></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+        <a href="../about.html">About</a>
+        <a href="../index.html#solutions">Solutions</a>
+        <a href="../index.html#lab">Lab Systems</a>
+        <a href="../blog.html" style="color: var(--blue);">Blog</a>
+        <a href="mailto:info@flowingbot.com" class="nav-cta">GET IN TOUCH</a>
+    </div>
+</nav>
+
+<header class="article-header">
+    <div class="article-header-container">
+        <div class="article-meta">
+            <span>August 10, 2026</span>
+            <span>•</span>
+            <span>By Andrea Prozzo</span>
+        </div>
+        <h1>Why We Built a Zero-Knowledge K8s Gateway</h1>
+        <div class="stack-pills" style="margin-top: 24px;">
+            <span>Kubernetes</span>
+            <span>RBAC</span>
+            <span>Control Plane</span>
+            <span>FastAPI</span>
+        </div>
+    </div>
+</header>
+
+<main class="article-body">
+    <p>Managing access to multiple Kubernetes clusters—whether for a small team, a homelab, or edge IoT deployments—can quickly become a logistical nightmare. Distributing <code>kubeconfig</code> files or raw Service Account tokens to developers or collaborators is risky. Revoking compromised credentials is slow, and setting up heavy VPNs just for API access feels like overkill.</p>
+    
+    <p>To solve this, I built the <strong>K8s Cloud Gateway</strong>: a lightweight, self-hosted web platform that acts as an authenticated proxy between users and Kubernetes clusters. It’s built with Python (FastAPI) and is designed specifically for small teams and homelabbers who want secure, multi-tenant cluster governance without the enterprise bloat.</p>
+
+    <!-- INSERISCI QUI IL PERCORSO DELLA TUA IMMAGINE -->
+    <img src="../assets/gateway-dashboard-1.jpg" alt="K8s Cloud Gateway Dashboard Interface" class="article-image">
+
+    <h2>The Core Idea: Zero-Knowledge Client Side</h2>
+    <p>The primary design principle of the Gateway is simple: <strong>credentials never leave the server</strong>. Users get access, not keys.</p>
+    
+    <p>When a user logs into a specific profile (e.g., "dev" or "admin"), the platform issues a short-lived JWT stored securely as an <code>HttpOnly</code> cookie. Crucially, this JWT contains <em>no Kubernetes credentials</em>. Every real credential (the K8s Service Account token and CA certificate) lives exclusively in the server-side SQLite database. The gateway fetches them on the fly, builds a scoped K8s client to forward the request, and immediately discards the client.</p>
+
+    <h2>A Fully Featured K8s Console</h2>
+    <p>The gateway isn't just a read-only viewer. The built-in K8s Console gives you visibility over the vast majority of Kubernetes resources and the ability to actually interact with them. You can scale workloads up or down, trigger deployment restarts, and troubleshoot active pods. Need to deploy a quick fix or a new resource? You can write or paste raw YAML manifests and <code>apply</code> them directly from the UI, bypassing the need for a local terminal.</p>
+
+    <h2>Complete Helm Lifecycle Management</h2>
+    <p>Managing applications is just as comprehensive. The dedicated Helm Console lets you interact with Helm releases seamlessly. You get all the core functionalities: you can lint charts before pulling the trigger, manage rollouts, and easily rollback if something goes wrong. A huge time-saver is the ability to deploy custom, unlisted applications by simply uploading a <code>.tar</code> or <code>.zip</code> package directly through the browser.</p>
+
+    <h2>The Admin Dashboard & Built-in Auditing</h2>
+    <p>Separate from the user-facing K8s and Helm consoles, there is a dedicated Admin Dashboard. This is the control room where platform administrators can register new clusters, provision user profiles, and monitor the overall status of the fleet.</p>
+    
+    <p>To keep things secure and standardized, the dashboard goes a step further: it actively monitors registered clusters and verifies them against a set of built-in audit rules, ensuring they remain compliant with your baseline configurations and security postures.</p>
+
+    <img src="../assets/gateway-dashboard-2.jpg" alt="Admin Dashboard Interface" class="article-image">
+
+    <h2>Delegating to Kubernetes Native RBAC</h2>
+    <p>I didn't want to reinvent the wheel by building a complex shadow permission system into the Gateway. Instead, the platform delegates all resource-level access control directly to Kubernetes RBAC.</p>
+    
+    <p>If a user authenticates with a restricted "dev" profile, the Gateway simply uses that corresponding Service Account token. If that user tries to delete a namespace, the Kubernetes API server will reject it with a <code>403 Forbidden</code>, and the Gateway simply propagates that error back to the frontend. It’s secure, predictable, and leverages the robust RBAC you already have configured in your clusters.</p>
+
+    <h2>The Takeaway</h2>
+    <p>The K8s Cloud Gateway isn't trying to replace massive enterprise platforms. It’s a focused, zero-knowledge tool designed to give small teams and edge deployers a secure, team-friendly control plane. By keeping credentials locked server-side, offering full K8s/Helm interaction, and relying on native RBAC, you limit the blast radius of any compromised session and make cluster management actually enjoyable.</p>
+    
+    <p>The project is entirely open-source. You can check out the architecture, read the docs, and find the deployment instructions on the official <a href="https://github.com/AndreaProzzo21/k8s-cloud-gateway" target="_blank" rel="noopener noreferrer" style="color: var(--blue); font-weight: 600; text-decoration: underline;">GitHub Repository</a>.</p>
+    
+    <p><em>How do you handle K8s access for your team or homelab? Do you still pass around kubeconfigs? Let's discuss it in the comments below!</em></p>
+</main>
+
+<!-- GISCUS COMMENTS SECTION -->
+<div class="giscus-wrapper">
+    <h3 style="margin-bottom: 24px; font-family: var(--font-display);">Discussion & Reactions</h3>
+    
+    <script src="https://giscus.app/client.js"
+            data-repo="AndreaProzzo21/flowing-bot"
+            data-repo-id="R_kgDOTty88A"
+            data-category="General"
+            data-category-id="DIC_kwDOTty88M4DCqQ3"
+            data-mapping="title"
+            data-strict="0"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="bottom"
+            data-theme="noborder_light"
+            data-lang="en"
+            crossorigin="anonymous"
+            async>
+    </script>
+</div>
+
+<footer>
+    <div class="container footer-row">
+        <span class="footer-brand">© 2026 FLOWINGBOT LAB</span>
+        <a href="mailto:info@flowingbot.com" class="footer-mail">Contact us · info@flowingbot.com</a>
+    </div>
+</footer>
+
+<script src="../app.js"></script>
+</body>
+</html>
