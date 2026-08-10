@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lightweight Kubernetes Logging: Vector & Victoria Logs - FlowingBot Blog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" type="image/png" sizes="192x192" href="../logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css?v=7">
+<style>
+    /* Added some quick inline-style variables for the code blocks to ensure they look good */
+    .code-block {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        padding: 16px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 0.9em;
+        margin-bottom: 24px;
+        color: #212529;
+    }
+</style>
+</head>
+<body>
+
+<nav id="site-nav">
+    <a href="../index.html" class="brand">
+        <svg class="brand-mark" viewBox="0 0 30 30" fill="none">
+            <rect x="1" y="1" width="28" height="28" rx="7" stroke="#1E4FE0" stroke-width="1.4"/>
+            <path d="M7 20C10 20 10 10 15 10C20 10 20 20 23 20" stroke="#1E4FE0" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="23" cy="20" r="1.6" fill="#1E4FE0"/>
+        </svg>
+        <span class="brand-word">Flowing<span>Bot</span></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+        <a href="../about.html">About</a>
+        <a href="../index.html#solutions">Solutions</a>
+        <a href="../index.html#lab">Lab Systems</a>
+        <a href="../blog.html" style="color: var(--blue);">Blog</a>
+        <a href="mailto:info@flowingbot.com" class="nav-cta">GET IN TOUCH</a>
+    </div>
+</nav>
+
+<header class="article-header">
+    <div class="article-header-container">
+        <div class="article-meta">
+            <span>August 4, 2026</span>
+            <span>•</span>
+            <span>By Andrea Prozzo</span>
+        </div>
+        <h1>Lightweight Kubernetes Logging: Vector & Victoria Logs</h1>
+        <div class="stack-pills" style="margin-top: 24px;">
+            <span>Logging</span>
+            <span>Vector</span>
+            <span>VictoriaLogs</span>
+            <span>Kubernetes</span>
+            <span>FluxCD</span>
+        </div>
+    </div>
+</header>
+
+<main class="article-body">
+    <p>As soon as you start deploying multiple applications on a Kubernetes cluster, having centralized access to your logs becomes essential. The moment a pod crashes, trying to hunt down the logs manually via <code>kubectl</code> is a recipe for frustration.</p>
+    
+    <h2>The Problem with the "Standard" Stack</h2>
+    <p>When we talk about Kubernetes logging, the industry standard is often the PLG stack (Promtail, Loki, Grafana). While it’s incredibly powerful, it can also be significantly oversized if you are running a modest cluster. If your homelab or cloud edge environment is running on resource-constrained nodes—like an AWS EC2 <code>t3.small</code> or <code>t3.micro</code>—deploying a full Grafana and Loki stack can easily eat up a huge chunk of your available RAM and CPU before you even deploy your first application.</p>
+    
+    <h2>A Leaner Alternative: Vector + Victoria Logs</h2>
+    <p>Recently, I decided to look for a more lightweight alternative for my infrastructure, and I found an incredible combination: <strong>Vector</strong> (for log collection) and <strong>Victoria Logs</strong> (for log storage and querying).</p>
+    
+    <p>Both tools are extremely resource-efficient, written in compiled languages (Rust and Go, respectively), and can be deployed via Helm in minutes. The best part? Victoria Logs comes with a built-in, beautifully minimal Web UI that you can easily expose securely behind a reverse proxy or VPN on a custom subdomain.</p>
+    
+    <h2>Configuring Vector with FluxCD</h2>
+    <p>While Victoria Logs basically runs perfectly out of the box, Vector acts as a highly flexible router and requires some configuration to know exactly what to collect, how to process it, and where to send it.</p>
+    
+    <p>Since I manage my cluster using GitOps principles with FluxCD, here is the actual <code>HelmRelease</code> manifest I use. Notice the resource constraints (just 64Mi of RAM requested!) and the custom transformations to drop noisy logs before they even reach the database:</p>
+    
+    <pre class="code-block"><code>apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: vector
+  namespace: logging
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: vector
+      version: ">=0.30.0"
+      sourceRef:
+        kind: HelmRepository
+        name: vector
+        namespace: flux-system
+  install:
+    createNamespace: true
+  values:
+    role: Agent
+
+    service:
+      enabled: false
+
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        memory: 256Mi
+
+    customConfig:
+      data_dir: /vector-data-dir
+
+      sources:
+        kubernetes_logs:
+          type: kubernetes_logs
+          # Prevent infinite logging loops by ignoring the logging namespace
+          extra_field_selector: "metadata.namespace!=logging"
+
+      transforms:
+        drop_health_checks:
+          type: filter
+          inputs:
+            - kubernetes_logs
+          # Keep our database clean from noisy readiness/liveness probes
+          condition: '!contains(string!(.message), "GET /health")'
+
+      sinks:
+        to_victorialogs:
+          type: elasticsearch
+          inputs:
+            - drop_health_checks
+          endpoints:
+            - http://victorialogs-victoria-logs-single-server.logging.svc.cluster.local:9428/insert/elasticsearch/
+          mode: bulk
+          api_version: v8
+          healthcheck:
+            enabled: true
+          buffer:
+            type: disk
+            max_size: 268435488
+            when_full: block
+          query:
+            _msg_field: message
+            _time_field: timestamp
+            # Properly map Kubernetes metadata to VictoriaLogs streams
+            _stream_fields: "kubernetes.pod_namespace,kubernetes.pod_name,kubernetes.container_name"</code></pre>
+
+    <h3>Why this exact setup rocks</h3>
+    <ul style="margin-bottom: 32px; padding-left: 20px;">
+        <li style="margin-bottom: 10px;"><strong>Smart Filtering:</strong> By using Vector's transforms, I am silently dropping HTTP <code>/health</code> checks and ignoring the <code>logging</code> namespace entirely. This saves disk space and prevents potential ingestion loops.</li>
+        <li style="margin-bottom: 10px;"><strong>Tiny Footprint:</strong> Vector is running with a memory request of just 64Mi. Compare that to JVM-based shippers, and you'll see why it's perfect for edge nodes.</li>
+        <li><strong>Seamless Integration:</strong> Victoria Logs natively accepts the Elasticsearch bulk API format. By defining <code>_stream_fields</code>, we ensure that logs are perfectly indexed by namespace, pod, and container for extremely fast querying in the UI.</li>
+    </ul>
+
+    <h2>The Result</h2>
+    <p>By moving away from heavier default stacks, I managed to centralize all my Kubernetes logs without dragging down my node's performance. It’s a perfect fit for edge nodes, homelabs, or cloud setups where compute efficiency is a top priority.</p>
+    
+    <p><em>Have you tried Vector or Victoria Logs in your own clusters? What's your go-to logging stack for small environments? Let me know in the discussion below!</em></p>
+</main>
+
+<!-- GISCUS COMMENTS SECTION -->
+<div class="giscus-wrapper">
+    <h3 style="margin-bottom: 24px; font-family: var(--font-display);">Discussion & Reactions</h3>
+    
+    <script src="https://giscus.app/client.js"
+            data-repo="AndreaProzzo21/flowing-bot"
+            data-repo-id="R_kgDOTty88A"
+            data-category="General"
+            data-category-id="DIC_kwDOTty88M4DCqQ3"
+            data-mapping="title"
+            data-strict="0"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="bottom"
+            data-theme="noborder_light"
+            data-lang="en"
+            crossorigin="anonymous"
+            async>
+    </script>
+</div>
+
+<footer>
+    <div class="container footer-row">
+        <span class="footer-brand">© 2026 FLOWINGBOT LAB</span>
+        <a href="mailto:info@flowingbot.com" class="footer-mail">Contact us · info@flowingbot.com</a>
+    </div>
+</footer>
+
+<script src="../app.js"></script>
+</body>
+</html>
