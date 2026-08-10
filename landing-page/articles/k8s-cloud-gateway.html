@@ -73,9 +73,6 @@
     
     <p>To solve this, I built the <strong>K8s Cloud Gateway</strong>: a lightweight, self-hosted web platform that acts as an authenticated proxy between users and Kubernetes clusters. It’s built with Python (FastAPI) and is designed specifically for small teams and homelabbers who want secure, multi-tenant cluster governance without the enterprise bloat.</p>
 
-    <!-- INSERISCI QUI IL PERCORSO DELLA TUA IMMAGINE -->
-    <img src="../assets/gateway-dashboard-1.jpg" alt="K8s Cloud Gateway Dashboard Interface" class="article-image">
-
     <h2>The Core Idea: Zero-Knowledge Client Side</h2>
     <p>The primary design principle of the Gateway is simple: <strong>credentials never leave the server</strong>. Users get access, not keys.</p>
     
@@ -83,6 +80,9 @@
 
     <h2>A Fully Featured K8s Console</h2>
     <p>The gateway isn't just a read-only viewer. The built-in K8s Console gives you visibility over the vast majority of Kubernetes resources and the ability to actually interact with them. You can scale workloads up or down, trigger deployment restarts, and troubleshoot active pods. Need to deploy a quick fix or a new resource? You can write or paste raw YAML manifests and <code>apply</code> them directly from the UI, bypassing the need for a local terminal.</p>
+
+    <!-- INSERISCI QUI IL PERCORSO DELLA TUA IMMAGINE -->
+    <img src="../assets/gateway-dashboard-1.jpg" alt="K8s Cloud Gateway Dashboard Interface" class="article-image">
 
     <h2>Complete Helm Lifecycle Management</h2>
     <p>Managing applications is just as comprehensive. The dedicated Helm Console lets you interact with Helm releases seamlessly. You get all the core functionalities: you can lint charts before pulling the trigger, manage rollouts, and easily rollback if something goes wrong. A huge time-saver is the ability to deploy custom, unlisted applications by simply uploading a <code>.tar</code> or <code>.zip</code> package directly through the browser.</p>
