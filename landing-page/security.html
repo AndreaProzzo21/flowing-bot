@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy & Cookies - FlowingBot Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="icon" type="image/png" sizes="192x192" href="/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=7">
+<style>
+    .privacy-content {
+        max-width: 800px;
+        margin: 60px auto 100px;
+        padding: 0 32px;
+        color: var(--ink-soft);
+        font-size: 1.05rem;
+    }
+    .privacy-content h2 {
+        font-family: var(--font-display);
+        color: var(--ink);
+        font-size: 1.5rem;
+        margin: 40px 0 16px;
+    }
+    .privacy-content p {
+        margin-bottom: 20px;
+    }
+    .privacy-content ul {
+        margin-bottom: 24px;
+        padding-left: 20px;
+    }
+    .privacy-content li {
+        margin-bottom: 10px;
+    }
+    .privacy-content a {
+        color: var(--blue);
+        text-decoration: underline;
+    }
+</style>
+</head>
+<body>
+
+<nav id="site-nav">
+    <a href="index.html" class="brand">
+        <svg class="brand-mark" viewBox="0 0 30 30" fill="none">
+            <rect x="1" y="1" width="28" height="28" rx="7" stroke="#1E4FE0" stroke-width="1.4"/>
+            <path d="M7 20C10 20 10 10 15 10C20 10 20 20 23 20" stroke="#1E4FE0" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="23" cy="20" r="1.6" fill="#1E4FE0"/>
+        </svg>
+        <span class="brand-word">Flowing<span>Bot</span></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+        <a href="about.html">About</a>
+        <a href="index.html#solutions">Solutions</a>
+        <a href="index.html#lab">Lab Systems</a>
+        <a href="blog.html">Blog</a>
+        <a href="mailto:info@flowingbot.com" class="nav-cta">GET IN TOUCH</a>
+    </div>
+</nav>
+
+<header class="hero about-hero">
+    <div class="container about-hero-container">
+        <span class="eyebrow">Legal Notes</span>
+        <h1>Privacy & <span>Cookies</span>.</h1>
+        <p class="lede">How we handle data on this static website. Spoiler: we try to collect as little as possible.</p>
+    </div>
+</header>
+
+<main class="privacy-content">
+    <h2>1. The Short Version</h2>
+    <p>FlowingBot Lab is a static website. We don't use Google Analytics, Meta Pixels, or any marketing tracking scripts. We don't want to follow you around the internet or sell your data.</p>
+    <p>However, to keep the site secure and to allow you to interact with our blog, some technical data processing is inevitable. Here is exactly what happens.</p>
+
+    <h2>2. Server Logs (Nginx)</h2>
+    <p>Like almost every web server on the internet, our Nginx container automatically records basic information about every request it receives. This data is strictly used for security monitoring, troubleshooting, and preventing abuse (e.g., DDoS attacks).</p>
+    <ul>
+        <li><strong>What is collected:</strong> Your IP address, browser type (User-Agent), the pages you visited, and the time of the visit.</li>
+        <li><strong>How long it's kept:</strong> Logs are rotated and permanently deleted after a short retention period (usually 14 days), unless required longer to investigate a specific security incident.</li>
+    </ul>
+
+    <h2>3. Blog Comments & Reactions (Giscus)</h2>
+    <p>To provide a comment section without needing a heavy backend database, our blog uses an open-source tool called <a href="https://giscus.app/" target="_blank" rel="noopener">Giscus</a>. Giscus relies entirely on the GitHub Discussions API.</p>
+    <ul>
+        <li><strong>When you just read an article:</strong> The Giscus script loads to display existing comments. This involves communicating with GitHub's servers.</li>
+        <li><strong>When you log in to comment:</strong> You authenticate directly with GitHub. FlowingBot Lab <strong>never</strong> sees your password or your GitHub tokens. We only store the text of your comment publicly in our GitHub repository.</li>
+        <li><strong>Cookies:</strong> Giscus and GitHub may set strictly necessary and session cookies in your browser to maintain your login state while you interact with the comments. You can review GitHub's privacy policy <a href="https://docs.github.com/en/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener">here</a>.</li>
+    </ul>
+
+    <h2>4. Third-Party Fonts</h2>
+    <p>This website uses Google Fonts (Space Grotesk, Inter, and IBM Plex Mono) to ensure text renders correctly across different devices. When your browser requests these fonts, your IP address is briefly visible to Google's servers. You can read more about how Google handles this in their <a href="https://developers.google.com/fonts/faq/privacy" target="_blank" rel="noopener">Fonts Privacy FAQ</a>.</p>
+
+    <h2>5. Contacting Us</h2>
+    <p>If you click on our contact links and send an email to <code>info@flowingbot.com</code>, we will obviously receive your email address and any information you include in your message. We will only use this information to reply to your inquiry.</p>
+
+    <h2>6. Your Rights</h2>
+    <p>Under the GDPR (and similar privacy frameworks), you have the right to request access to, deletion of, or correction of your personal data. Since we don't maintain user accounts or marketing databases, the only identifiable data we might hold is an IP address in a temporary server log or an email you sent us.</p>
+    <p>If you have any questions or requests regarding your privacy, feel free to reach out at <a href="mailto:info@flowingbot.com">info@flowingbot.com</a>.</p>
+</main>
+
+<footer>
+    <div class="container footer-row">
+        <span class="footer-brand">© 2026 FLOWINGBOT LAB</span>
+        <div style="display: flex; gap: 24px; align-items: center;">
+            <a href="privacy.html" style="font-size: 0.85rem; color: var(--ink-soft); text-decoration: none;">Privacy & Cookies</a>
+            <a href="mailto:info@flowingbot.com" class="footer-mail">Contact us · info@flowingbot.com</a>
+        </div>
+    </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
